@@ -13,7 +13,7 @@ struct SyncInter::Q SyncInter::NLerp(const Q& q1, const Q& q2, const double& t)
 	NLerp_temp.z = q1.z * (1 - t) + q2.z * t;
 	NLerp_temp.w = q1.w * (1 - t) + q2.w * t;
 
-	// Lerp¶þ·¶Êý
+	// Lerpï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	double Norm = 0.0;
 	Norm = sqrt(NLerp_temp.x * NLerp_temp.x + NLerp_temp.y * NLerp_temp.y
 		+ NLerp_temp.z * NLerp_temp.z + NLerp_temp.w * NLerp_temp.w);
@@ -36,7 +36,7 @@ void SyncInter::GenTimestampQuaternion()
 	{
 		double random = rand() % (N + 1) / (double)(N + 1);
 		cam_time = T0_CAM + (double)cam_num * (1.0 / FREQ_CAM) + 0.5 * (1.0 / FREQ_CAM) * random;
-		// std::cout << "cam_time Number£º " << cam_time << std::endl;
+		// std::cout << "cam_time Numberï¿½ï¿½ " << cam_time << std::endl;
 		cam_num++;
 		// std::cout << " Number of cam_num: " << cam_num << std::endl;
 		cam_t.push_back(cam_time);
@@ -71,7 +71,7 @@ void SyncInter::GenTimestampQuaternion()
 	return;
 }
 
-// ½«¼ÆËã½á¹û±£´æ£¬ÔÙÓÉÏû·ÑÕß¶ÁÈ¡·¢²¼
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¶ï¿½È¡ï¿½ï¿½ï¿½ï¿½
 bool SyncInter::CalImuPose(const double & tc, const std::vector<double>& imu_t, const std::vector<Q>& imu_q)
 {
 	//double Tc = tc;
@@ -120,29 +120,29 @@ void SyncInter::producer()
 	//SyncInter a;
 	for (int i = 0; i < GetCamt().size(); i++)
 	{
-		// Ö÷¶¯ÈÃ³öcpu£¬²»²ÎÓëcpu µÄ±¾´Îµ÷¶È£¬ÈÃÆäËûÏß³ÌÊ¹ÓÃ,µÈÒ»ÃëºóÔÙ²ÎÓëµ÷¶È
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Ã³ï¿½cpuï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½cpu ï¿½Ä±ï¿½ï¿½Îµï¿½ï¿½È£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß³ï¿½Ê¹ï¿½ï¿½,ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ù²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		// this_thread::sleep_for(chrono::seconds(1));
 		std::unique_lock<std::mutex> lk(m);
 		//GenTimestampQuaternion();
 
 		double tc = (double)GetCamt()[i];
-		// Èç¹û²Ö¿âÖÐÓÐ²úÆ·£¬µÈ´ýÏû·ÑÕßÏû·ÑÍêÔÙÉú²ú
+		// ï¿½ï¿½ï¿½ï¿½Ö¿ï¿½ï¿½ï¿½ï¿½Ð²ï¿½Æ·ï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		while (notify || !result_q.empty())
 		{
 			cond.wait(lk);
 		}
-		// ²Ö¿âÖÐÎÞ²úÆ·ÊÇ£¬×°Èë
+		// ï¿½Ö¿ï¿½ï¿½ï¿½ï¿½Þ²ï¿½Æ·ï¿½Ç£ï¿½×°ï¿½ï¿½
 		//CalImuPose(tc, GetImut(), GetImuq())
 		if (CalImuPose(tc, GetImut(), GetImuq()))
 		{
 		}
-		// ÉèÖÃÓÐ²úÆ·µÄÍ¨Öª
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Ð²ï¿½Æ·ï¿½ï¿½Í¨Öª
 		notify = true;
-		// Í¨ÖªÏû·ÑÕß¿ÉÒÔÈ¡²úÆ·
+		// Í¨Öªï¿½ï¿½ï¿½ï¿½ï¿½ß¿ï¿½ï¿½ï¿½È¡ï¿½ï¿½Æ·
 		cond.notify_one();
 	}
 
-	// Í¨ÖªÏû·ÑÕß²»Éú²úÁË
+	// Í¨Öªï¿½ï¿½ï¿½ï¿½ï¿½ß²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	done = true;
 	cond.notify_one();
 }
@@ -151,14 +151,14 @@ void SyncInter::consumer()
 {
 	while (!done)
 	{
-		// ÉÏËø±£»¤¹²Ïí×ÊÔ´£¬unique_lockÒ»´ÎÊµÏÖÉÏËøºÍ½âËø
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½unique_lockÒ»ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í½ï¿½ï¿½ï¿½
 		std::unique_lock<std::mutex> lk(m);
-		// µÈ´ýÉú²úÕßÍ¨ÖªÓÐ×ÊÔ´
+		// ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨Öªï¿½ï¿½ï¿½ï¿½Ô´
 		while (!notify)
 		{
 			cond.wait(lk);
 		}
-		// Èç¶ÓÁÐ²»¿Õ£¬¶Á³ö
+		// ï¿½ï¿½ï¿½ï¿½Ð²ï¿½ï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½
 		while (!result_q.empty())
 		{
 			std::cout << "Consumer Output Message:  \n"
@@ -171,7 +171,7 @@ void SyncInter::consumer()
 				<< std::endl;
 			result_t.pop();
 			result_q.pop();
-			// Í¨ÖªÉú²úÕß²Ö¿âÈÝÁ¿²»×ã£¬Éú²ú²úÆ·
+			// Í¨Öªï¿½ï¿½ï¿½ï¿½ï¿½ß²Ö¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ·
 			notify = false;
 			cond.notify_one();
 		}

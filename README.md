@@ -1,16 +1,22 @@
-# Problem_test2
+<!--
+ * @Author: your name
+ * @Date: 2021-03-05 21:51:17
+ * @LastEditTime: 2021-03-05 22:11:07
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /Problem_test2/README.md
+-->
 
-该题目2代码，最初为调试方便，在windows下实验，经测试在windows下VS2017可以正确运行。
-在ubuntu下测试使用cmake编译，编译报错对‘pthread_create’未定义的引用，网上查阅资料，一大推说的是需要通过g++进行编译，
-如：g++ -o test test.cpp -lpthread  这种方式才可。
 
-# 三个版本
-## 1、Problem_two所对应文件夹，定义类，类中定义线程函数，在VS中可运行。
-## 2、windows所对应文件夹，未建立类，直接使用定义函数实现。
-## 3、ubuntu所对应文件夹，为在ubuntu下建立的cmake工程，与2代码同。
 
-个人心得：
-在调试这一块代码时，花费了较多时间，最初做法是把整个工程，封装了一个类，然后在类中定义线程函数，然后各种入坑，最终放弃（后调试成功，已更新源码）。后又把两线程单独封装了两个类，调试报错....
-最终干脆不封装类，用最直接的方式先把基本功能实现。归根结底，还是代码写的少，以后需要多锻炼。
+```bash
 
-感谢肖工，给这次机会，受益匪浅！
+mkdir build && cd build
+cmake ..
+make -j
+./test2
+
+```
+
+
+
